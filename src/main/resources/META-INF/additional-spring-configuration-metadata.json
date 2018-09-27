@@ -1,0 +1,12 @@
+{
+  "groups": [
+
+  ],
+  "properties": [
+    {
+      "name": "restclient.ssl.supportedciphersuites",
+      "type": "java.lang.String",
+      "description": "Description for restclient.ssl.supportedciphersuites."
+    }
+  ]
+}

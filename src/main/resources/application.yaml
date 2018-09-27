@@ -1,0 +1,15 @@
+#restclient.ssl:
+#  enabled: false
+#  forall: false
+#  cncheck: true
+#  truststore:
+#    file:
+#    password:
+#    type: JKS
+#  keystore:
+#    file:
+#    password:
+#    type: PKCS12
+#    alias: "1"
+#  supportedprotocols: TLSv1.2
+#  supportedciphersuites:
