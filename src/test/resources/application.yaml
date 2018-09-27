@@ -1,13 +1,15 @@
-restclient.ssl:
-  enabled: false
-  cncheck: true
-  truststore:
-    file: some/file
-    password: random
-  keystore:
-    file: other/file
-    password: random2
-    type: ASDF
-    alias: "2"
-  supportedprotocols: TLSv1.2, TLSv1
-  supportedciphersuites:
+restclient:
+  ssl:
+    forall: false
+    enabled: false
+    cncheck: true
+    truststore:
+      file: some/file
+      password: random
+    keystore:
+      file: other/file
+      password: random2
+      type: ASDF
+      alias: "2"
+    supportedprotocols: TLSv1.2, TLSv1
+    supportedciphersuites:

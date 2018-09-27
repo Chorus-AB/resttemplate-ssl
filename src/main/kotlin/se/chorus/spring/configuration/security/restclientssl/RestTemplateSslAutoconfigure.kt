@@ -1,3 +1,22 @@
+/*-
+ * #%L
+ * SSL autoconfiguration of RestTemplate
+ * %%
+ * Copyright (C) 2018 Chorus AB
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
 package se.chorus.spring.configuration.security.restclientssl
 
 import org.apache.http.conn.ssl.NoopHostnameVerifier
@@ -20,13 +39,13 @@ import javax.annotation.Resource
 @Configuration
 @ConditionalOnBean(RestTemplateBuilder::class)
 @ConditionalOnProperty(prefix = "restclient.ssl", name = ["enabled"], havingValue = "true")
-class RestTemplateSslAutoconfigure {
+open class RestTemplateSslAutoconfigure {
 
     @Resource lateinit var properties: RestBuilderSslProperties
     @Resource lateinit var loader: ResourceLoader
 
     @Bean
-    fun clientHttpsRequestFactory(): ClientHttpRequestFactory {
+    open fun clientHttpsRequestFactory(): ClientHttpRequestFactory {
 
         fun createKeystore(values: RestBuilderSslProperties.JavaKeystore): KeyStore? =
             KeyStore.getInstance(values.type)?.apply {
@@ -50,13 +69,14 @@ class RestTemplateSslAutoconfigure {
     }
 
     @Bean
-    fun sslRestTemplate(restTemplateBuilder: RestTemplateBuilder): RestTemplate =
+    @Suppress("SpringJavaInjectionPointsAutowiringInspection")
+    open fun sslRestTemplate(restTemplateBuilder: RestTemplateBuilder): RestTemplate =
         restTemplateBuilder.requestFactory {
             clientHttpsRequestFactory()
         }.build()
 
     @Bean
     @ConditionalOnProperty(prefix = "restclient.ssl", name = ["forall"], havingValue = "true")
-    fun sslCustomizer(httpsRequestFactory: ClientHttpRequestFactory): RestTemplateCustomizer
+    open fun sslCustomizer(httpsRequestFactory: ClientHttpRequestFactory): RestTemplateCustomizer
             = RestTemplateCustomizer { restTemplate -> restTemplate.requestFactory = clientHttpsRequestFactory() }
 }

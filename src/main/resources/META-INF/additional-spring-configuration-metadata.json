@@ -1,12 +1,98 @@
 {
   "groups": [
-
+    {
+      "name": "restclient.ssl",
+      "type": "se.chorus.spring.configuration.security.restclientssl.RestBuilderSslProperties",
+      "sourceType": "se.chorus.spring.configuration.security.restclientssl.RestBuilderSslProperties"
+    }
   ],
   "properties": [
     {
       "name": "restclient.ssl.supportedciphersuites",
-      "type": "java.lang.String",
+      "type": "java.lang.String[]",
       "description": "Description for restclient.ssl.supportedciphersuites."
+    },
+    {
+      "name": "restclient.ssl.supportedprotocols",
+      "type": "java.lang.String[]",
+      "description": "Description for restclient.ssl.supportedprotocols."
+    },
+    {
+      "name": "restclient.ssl.keystore.alias",
+      "type": "java.lang.String",
+      "description": "Keystore alias for client certificate.",
+      "defaultValue": "1"
+    },
+    {
+      "name": "restclient.ssl.keystore.type",
+      "type": "java.lang.String",
+      "description": "Type of keystore.",
+      "defaultValue": "PKCS12"
+    },
+    {
+      "name": "restclient.ssl.keystore.password",
+      "type": "java.lang.String",
+      "description": "Password for keystore."
+    },
+    {
+      "name": "restclient.ssl.keystore.file",
+      "type": "java.lang.String",
+      "description": "Path to keystore file containing client certificate."
+    },
+    {
+      "name": "restclient.ssl.truststore.type",
+      "type": "java.lang.String",
+      "description": "Type of keystore.",
+      "defaultValue": "PKCS12"
+    },
+    {
+      "name": "restclient.ssl.truststore.password",
+      "type": "java.lang.String",
+      "description": "Password for truststore."
+    },
+    {
+      "name": "restclient.ssl.truststore.file",
+      "type": "java.lang.String",
+      "description": "Path to truststore file (containing CA's or trusted server certificates)."
+    },
+    {
+      "name": "restclient.ssl.cncheck",
+      "type": "java.lang.Boolean",
+      "description": "Hostname verification.",
+      "defaultValue": true
+    },
+    {
+      "name": "restclient.ssl.forall",
+      "type": "java.lang.Boolean",
+      "description": "Injects a RestTemplateCustomizer into the RestTemplateBuilder so that all RestTemplate instances created with builder use the clientHttpsRequestFactory.",
+      "defaultValue": false
+    },
+    {
+      "name": "restclient.ssl.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Turns autoconfiguration on or off.",
+      "defaultValue": true
+    }
+  ],
+  "hints": [
+    {
+      "name": "restclient.ssl.truststore.type",
+      "values": [
+        {
+          "value": "JKS"
+        },{
+          "value": "PKCS12"
+        }
+      ]
+    },{
+      "name": "restclient.ssl.keystore.type",
+      "values": [
+        {
+          "value": "JKS"
+        },{
+          "value": "PKCS12"
+        }
+      ]
     }
   ]
 }
