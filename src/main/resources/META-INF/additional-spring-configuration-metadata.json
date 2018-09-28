@@ -37,7 +37,7 @@
     {
       "name": "restclient.ssl.keystore.file",
       "type": "java.lang.String",
-      "description": "Path to keystore file containing client certificate."
+      "description": "Path to keystore file containing client certificate. Use an explicit \"file:\" prefix to enforce an absolute file path."
     },
     {
       "name": "restclient.ssl.truststore.type",
@@ -53,7 +53,7 @@
     {
       "name": "restclient.ssl.truststore.file",
       "type": "java.lang.String",
-      "description": "Path to truststore file (containing CA's or trusted server certificates)."
+      "description": "Path to truststore file (containing CA's or trusted server certificates). Use an explicit \"file:\" prefix to enforce an absolute file path."
     },
     {
       "name": "restclient.ssl.cncheck",

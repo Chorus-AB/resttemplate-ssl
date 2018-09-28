@@ -13,10 +13,10 @@ This is a simple autoconfiguration for RestTemplate when client certificates are
 |restclient.ssl.enabled|Turns autoconfiguration on or off|true|
 |restclient.ssl.cncheck|Hostname verification|true|
 |restclient.ssl.forall|Injects a RestTemplateCustomizer into the RestTemplateBuilder so that all RestTemplate instances created with builder use the *clientHttpsRequestFactory*|false|
-|restclient.ssl.truststore.file|Path to truststore file (containing CA's or trusted server certificates)|*null*|
+|restclient.ssl.truststore.file|Path to truststore file (containing CA's or trusted server certificates). Use an explicit "file:" prefix to enforce an absolute file path.|*null*|
 |restclient.ssl.truststore.password|Password for truststore|*null*|
 |restclient.ssl.truststore.type|Type of keystore|PKCS12|
-|restclient.ssl.keystore.file|Path to keystore file containing client certificate|*null*|
+|restclient.ssl.keystore.file|Path to keystore file containing client certificate. Use an explicit "file:" prefix to enforce an absolute file path.|*null*|
 |restclient.ssl.keystore.password|Password for keystore|*null*|
 |restclient.ssl.keystore.type|Type of keystore|PKCS12|
 |restclient.ssl.keystore.alias|Keystore alias for client certificate|"1"|

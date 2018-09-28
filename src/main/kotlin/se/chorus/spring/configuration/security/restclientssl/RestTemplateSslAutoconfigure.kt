@@ -21,10 +21,12 @@ package se.chorus.spring.configuration.security.restclientssl
 
 import org.apache.http.conn.ssl.NoopHostnameVerifier
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory
+import org.apache.http.conn.ssl.TrustSelfSignedStrategy
 import org.apache.http.impl.client.HttpClients
 import org.apache.http.ssl.SSLContexts
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
+import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.web.client.RestTemplateBuilder
 import org.springframework.boot.web.client.RestTemplateCustomizer
 import org.springframework.context.annotation.Bean
@@ -38,25 +40,25 @@ import javax.annotation.Resource
 
 @Configuration
 @ConditionalOnBean(RestTemplateBuilder::class)
-@ConditionalOnProperty(prefix = "restclient.ssl", name = ["enabled"], havingValue = "true")
 open class RestTemplateSslAutoconfigure {
 
-    @Resource lateinit var properties: RestBuilderSslProperties
     @Resource lateinit var loader: ResourceLoader
 
     @Bean
-    open fun clientHttpsRequestFactory(): ClientHttpRequestFactory {
+    @ConditionalOnProperty(prefix = "restclient.ssl", name = ["enabled"], havingValue = "true")
+    open fun clientHttpsRequestFactory(properties: RestBuilderSslProperties = properties()): ClientHttpRequestFactory {
 
         fun createKeystore(values: RestBuilderSslProperties.JavaKeystore): KeyStore? =
             KeyStore.getInstance(values.type)?.apply {
-                load(loader.getResource(values.file).inputStream, values.password.toCharArray())
+                load(loader.getResource(values.file!!).inputStream, values.password.toCharArray())
             }
 
         val sslContext = with(SSLContexts.custom()) {
             loadKeyMaterial(createKeystore(properties.keystore), properties.keystore.password.toCharArray()) { _, _ -> properties.keystore.alias }
-                    .loadKeyMaterial(createKeystore(properties.truststore), properties.truststore.password.toCharArray())
+                    .loadTrustMaterial(createKeystore(properties.truststore), TrustSelfSignedStrategy())
                     .build()
         }
+
         return with(HttpClients.custom()) {
             setSSLSocketFactory(SSLConnectionSocketFactory(
                     sslContext,
@@ -70,13 +72,17 @@ open class RestTemplateSslAutoconfigure {
 
     @Bean
     @Suppress("SpringJavaInjectionPointsAutowiringInspection")
-    open fun sslRestTemplate(restTemplateBuilder: RestTemplateBuilder): RestTemplate =
-        restTemplateBuilder.requestFactory {
-            clientHttpsRequestFactory()
-        }.build()
+    @ConditionalOnProperty(prefix = "restclient.ssl", name = ["enabled"], havingValue = "true")
+    open fun sslRestTemplate(restTemplateBuilder: RestTemplateBuilder, properties: RestBuilderSslProperties, httpsRequestFactory: ClientHttpRequestFactory): RestTemplate =
+        restTemplateBuilder.build().apply { requestFactory = httpsRequestFactory }
 
     @Bean
     @ConditionalOnProperty(prefix = "restclient.ssl", name = ["forall"], havingValue = "true")
+    @ConditionalOnBean(ClientHttpRequestFactory::class)
     open fun sslCustomizer(httpsRequestFactory: ClientHttpRequestFactory): RestTemplateCustomizer
             = RestTemplateCustomizer { restTemplate -> restTemplate.requestFactory = clientHttpsRequestFactory() }
+
+    @Bean
+    @ConfigurationProperties("restclient.ssl")
+    open fun properties(): RestBuilderSslProperties = RestBuilderSslProperties()
 }
