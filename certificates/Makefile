@@ -39,7 +39,6 @@ create-keystore:
 	    -keyalg RSA -keysize 4096 -sigalg SHA512withRSA -keypass $(PASSWORD) \
 	    -validity 3650 -dname $(DNAME_CA) \
 	    -keystore $(KEYSTORE) -storepass $(PASSWORD) -storetype pkcs12
-
 	# Prepare client truststore
 	keytool -export -alias ca -file ca.crt -rfc \
 	    -keystore $(KEYSTORE) -storepass $(PASSWORD)
