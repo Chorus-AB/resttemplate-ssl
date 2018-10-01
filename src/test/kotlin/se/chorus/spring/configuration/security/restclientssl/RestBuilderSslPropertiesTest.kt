@@ -25,6 +25,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import javax.annotation.Resource
 import org.assertj.core.api.Assertions.*
+import java.net.Socket
 
 @SpringBootTest
 @ExtendWith(SpringExtension::class)
@@ -42,12 +43,16 @@ internal class RestBuilderSslPropertiesTest {
             assertThat(this)
                     .hasFieldOrPropertyWithValue("file", "some/file")
                     .hasFieldOrPropertyWithValue("password", "random")
+            assertThat(enabled()).isTrue()
         }
         with(properties.keystore) {
             assertThat(this)
-                    .hasFieldOrPropertyWithValue("file", "other/file")
+                    .hasFieldOrPropertyWithValue("file", null)
                     .hasFieldOrPropertyWithValue("password", "random2")
                     .hasFieldOrPropertyWithValue("alias", "2")
+            assertThat(aliasStrategy()).isNotNull
+            assertThat(aliasStrategy()?.invoke(mapOf(), Socket())).isEqualTo(alias)
+            assertThat(enabled()).isFalse()
         }
     }
 
@@ -64,6 +69,7 @@ internal class RestBuilderSslPropertiesTest {
     @Test
     fun store_alias_can_be_null() {
         assertThat(properties.truststore).hasFieldOrPropertyWithValue("alias", null)
+        assertThat(properties.truststore.aliasStrategy()).isNull()
     }
 
     @Test

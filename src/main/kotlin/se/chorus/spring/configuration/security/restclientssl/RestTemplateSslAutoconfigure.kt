@@ -50,13 +50,21 @@ open class RestTemplateSslAutoconfigure {
 
         fun createKeystore(values: RestBuilderSslProperties.JavaKeystore): KeyStore? =
             KeyStore.getInstance(values.type)?.apply {
-                load(loader.getResource(values.file!!).inputStream, values.password.toCharArray())
+                load(loader.getResource(values.file!!).inputStream, values.password?.toCharArray())
             }
 
         val sslContext = with(SSLContexts.custom()) {
-            loadKeyMaterial(createKeystore(properties.keystore), properties.keystore.password.toCharArray()) { _, _ -> properties.keystore.alias }
-                    .loadTrustMaterial(createKeystore(properties.truststore), TrustSelfSignedStrategy())
-                    .build()
+
+            properties.keystore.let {
+                if(it.enabled()) {
+                    loadKeyMaterial(createKeystore(it), it.password?.toCharArray(), it.aliasStrategy())
+                }
+            }
+
+            if(properties.truststore.enabled()) {
+                loadTrustMaterial(createKeystore(properties.truststore), TrustSelfSignedStrategy())
+            }
+                  build()
         }
 
         return with(HttpClients.custom()) {

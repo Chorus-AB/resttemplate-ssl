@@ -16,7 +16,7 @@ This is a simple autoconfiguration for RestTemplate when client certificates are
 |restclient.ssl.truststore.file|Path to truststore file (containing CA's or trusted server certificates). Use an explicit "file:" prefix to enforce an absolute file path.|*null*|
 |restclient.ssl.truststore.password|Password for truststore|*null*|
 |restclient.ssl.truststore.type|Type of keystore|PKCS12|
-|restclient.ssl.keystore.file|Path to keystore file containing client certificate. Use an explicit "file:" prefix to enforce an absolute file path.|*null*|
+|restclient.ssl.keystore.file|Path to keystore file containing client certificate. Use an explicit "file:" prefix to enforce an absolute file path. Leave empty if no client certificate is to be used.|*null*|
 |restclient.ssl.keystore.password|Password for keystore|*null*|
 |restclient.ssl.keystore.type|Type of keystore|PKCS12|
 |restclient.ssl.keystore.alias|Keystore alias for client certificate|"1"|

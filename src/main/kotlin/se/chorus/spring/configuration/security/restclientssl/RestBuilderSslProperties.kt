@@ -19,7 +19,9 @@
  */
 package se.chorus.spring.configuration.security.restclientssl
 
+import org.apache.http.ssl.PrivateKeyDetails
 import org.springframework.boot.context.properties.NestedConfigurationProperty
+import java.net.Socket
 
 class RestBuilderSslProperties {
 
@@ -48,10 +50,24 @@ class RestBuilderSslProperties {
             field = if(value?.count() == 0) null else value
         }
 
-    class JavaKeystore() {
-        lateinit var file: String
-        lateinit var password: String
-        lateinit var type: String
+    class JavaKeystore {
+        var file: String? = null
+            set(value) {
+                field = if (value?.trim() == "") null else value
+            }
+        var password: String? = null
+        var type: String? = null
         var alias: String? = null
+            set(value) {
+                field = if (value?.trim() == "") null else value
+            }
+
+        fun enabled(): Boolean {
+            return file != null && type != null
+        }
+
+        fun aliasStrategy(): ((aliases: Map<String, PrivateKeyDetails>, socket: Socket) -> String)? =
+                    if(alias != null) { _,_ -> alias!!}
+                    else null
     }
 }

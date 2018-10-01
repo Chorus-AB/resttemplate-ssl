@@ -7,7 +7,7 @@ restclient:
       file: some/file
       password: random
     keystore:
-      file: other/file
+      file:
       password: random2
       type: ASDF
       alias: "2"
