@@ -1,6 +1,6 @@
-# SSL For RestTemplate
+# TSL/SSL For RestTemplate
 
-This is a simple autoconfiguration for RestTemplate when client certificates are needed.
+This is a simple autoconfiguration for RestTemplate with or without client certificate.
 
 ###When enabled, will inject the following beans into the context:
 * ***ClientHttpRequestFactory* clientHttpsRequestFactory** - A HttpRequestFactory configured to use client certificate 
