@@ -1,6 +1,6 @@
 /*-
  * #%L
- * SSL autoconfiguration of RestTemplate
+ * TLS/SSL autoconfiguration of RestTemplate
  * %%
  * Copyright (C) 2018 Chorus AB
  * %%
