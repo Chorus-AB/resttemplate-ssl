@@ -2,11 +2,11 @@
 
 This is a simple autoconfiguration for RestTemplate with or without client certificate.
 
-###When enabled, will inject the following beans into the context:
+### When enabled, will inject the following beans into the context:
 * ***ClientHttpRequestFactory* clientHttpsRequestFactory** - A HttpRequestFactory configured to use client certificate 
 * ***RestTemplate* sslRestTemplate** - A rest template using clientHttpsRequestFactory
 
-##Configuration:
+## Configuration:
 
 | Property | Description | Default |
 |---|---|---|
